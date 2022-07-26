@@ -21,30 +21,31 @@ plt.ylabel('weight')
 plt.show()
 
 
-#두 데이터를 합하고 사이킷런으로 훈련 세트와 테스트 세트 나누기
+#두 데이터를 합하기
 
 fish_data = np.column_stack((bream_length+smelt_length, bream_weight+smelt_weight))
 fish_target = np.concatenate((np.ones(35), np.zeros(14)))  #fish_data의 타겟 값(검증 리스트)
 
-train_input, test_input, train_target, test_target = train_test_split(fish_data, fish_target, random_state=42)  #세트 나누기
+
+#사이킷런으로 세트 나누기: stratify에 타깃 데이터를 전달하면 클래스 비율에 맞게 나눠줌
+
+train_input, test_input, train_target, test_target = train_test_split(fish_data, fish_target, stratify=fish_target, random_state=42)
 
 
+#k-최근접 이웃들을 제대로 판별할 수 있도록 스케일을 조정(반드시 테스트와 타겟 둘다 같은 스케일로!!!!!)
+
+mean = np.mean(train_input, axis=0)
+std = np.std(train_input, axis=0)
+train_scaled = (train_input - mean) / std
+
+test_scaled = (test_input - mean) / std
 
 
 #머신러닝(K-최근접 이웃 알고리즘)
 
 kn = KNeighborsClassifier()
-kn.fit(fish_data, fish_target)  #모델 학습
-kn.score(fish_data, fish_target)
-
-plt.scatter(bream_length, bream_weight)
-plt.scatter(smelt_length, smelt_weight)
-plt.scatter(30, 600, marker='^')  #길이 30, 무게 600인 생선의 위치를 세모로 표시!
-plt.xlabel('length')
-plt.ylabel('weight')
-plt.show()
-
-kn.predict([[30,600]])
+kn.fit(train_scaled, train_target)  #모델 학습
+print(kn.score(test_scaled, test_target))
 
 '''
 fish_data는 모델의 kn._fit_X 변수에, fish_target은 모델의 kn._y변수에 동일하게 저장되어 있음
