@@ -1,4 +1,4 @@
-#혼공머신 교재 1-3챕터
+#혼공머신 교재 1-3챕터~2챕터
 
 import matplotlib.pyplot as plt
 from sklearn.neighbors import KNeighborsClassifier
