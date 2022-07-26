@@ -1,6 +1,8 @@
 #혼공머신 교재 1-3챕터~2챕터
 
+import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
 
@@ -19,12 +21,17 @@ plt.ylabel('weight')
 plt.show()
 
 
-#머신러닝(K-최근접 이웃 알고리즘)
+#두 데이터를 합하고 사이킷런으로 훈련 세트와 테스트 세트 나누기
 
-length = bream_length + smelt_length  #값을 합치는 것이 X!! 도미 리스트에 빙어 리스트를 덧붙임
-weight = bream_weight + smelt_weight
-fish_data = [[l,w] for l, w in zip(length, weight)]
-fish_target = [1]*35 + [0]*14  #fish_data의 타겟 값(검증 리스트)
+fish_data = np.column_stack((bream_length+smelt_length, bream_weight+smelt_weight))
+fish_target = np.concatenate((np.ones(35), np.zeros(14)))  #fish_data의 타겟 값(검증 리스트)
+
+train_input, test_input, train_target, test_target = train_test_split(fish_data, fish_target, random_state=42)  #세트 나누기
+
+
+
+
+#머신러닝(K-최근접 이웃 알고리즘)
 
 kn = KNeighborsClassifier()
 kn.fit(fish_data, fish_target)  #모델 학습
