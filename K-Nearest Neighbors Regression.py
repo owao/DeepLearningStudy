@@ -58,3 +58,10 @@ if (knr.score(test_input, test_target)>knr.score(train_input, train_target)):
     print("과소적합입니다.(테스트 데이터 점수가 더 높거나 둘 다 점수가 지나치게 낮음)")
 elif (knr.score(test_input, test_target)<knr.score(train_input, train_target)):
     print("과대적합입니다.(훈련 데이터 점수가 더 높음)")
+
+
+#과대(과소)적합 조정
+knr.n_neighbors = 3  #이웃의 갯수를 5->3으로 설정
+knr.fit(train_input, train_target)
+print(knr.score(train_input, train_target))
+print(knr.score(test_input, test_target))
