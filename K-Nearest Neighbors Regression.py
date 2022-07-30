@@ -2,6 +2,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_absolute_error
 
 
 #제대로 된 농어 데이터
@@ -27,3 +30,31 @@ plt.scatter(perch_length, perch_weight)
 plt.xlabel('length')
 plt.ylabel('weight')
 plt.show()
+
+
+#훈련용 데이터와 테스트 데이터로 분리한 다음 사이킷런에 맞게 열이 2인 행렬로 바꿔준다
+
+train_input, test_input, train_target, test_target = train_test_split(perch_length, perch_weight, random_state=42)
+train_input = train_input.reshape(-1, 1)  #42개 데이터. -1은 전체 사이즈대로 행을 유지한다는 뜻
+test_input = test_input.reshape(-1, 1)  #14개 데이터.
+
+
+#모델 훈련
+knr = KNeighborsRegressor()
+knr.fit(train_input, train_target)
+print("test data score: ",knr.score(test_input, test_target))
+
+
+#예측 오찻값 확인
+test_prediction = knr.predict(test_input)  #테스트 세트 예측
+mae = mean_absolute_error(test_target, test_prediction)  #평균 절댓값 오차를 계산(예측이 얼마나 빗나갔는지 보기)
+print("error: ", mae)
+
+
+#과대(과소)적합 확인
+print("test score: ",knr.score(test_input, test_target))
+print("train score: ",knr.score(train_input, train_target))
+if (knr.score(test_input, test_target)>knr.score(train_input, train_target)):
+    print("과소적합입니다.(테스트 데이터 점수가 더 높거나 둘 다 점수가 지나치게 낮음)")
+elif (knr.score(test_input, test_target)<knr.score(train_input, train_target)):
+    print("과대적합입니다.(훈련 데이터 점수가 더 높음)")
