@@ -38,3 +38,14 @@ print(lr.coef_, lr.intercept_)  #기울기와 절편
 
 print("1차방정식 선형 회귀 훈련 모델 점수", lr.score(train_input, train_target))
 print("1차방정식 선형 회귀 테스트 모델 점수", lr.score(test_input, test_target))
+
+
+#모델 훈련(다항 회귀, polynomial regression)
+train_poly = np.column_stack((train_input**2, train_input))  #이차식에 적합한 데이터셋 제작
+test_poly = np.column_stack((test_input**2, test_input))  #이차항에 들어가는 변수, 일차항에 들어가는 변수로 데이터셋이 구성됨
+
+lr.fit(train_poly, train_target)
+print(lr.coef_, lr.intercept_)
+
+print("다항 회귀 훈련 모델 점수", lr.score(train_poly, train_target))
+print("다항 회귀 테스트 모델 점수", lr.score(test_poly, test_target))
