@@ -34,3 +34,5 @@ test_input = test_input.reshape(-1, 1)  #14개 데이터.
 
 lr = LinearRegression()
 lr.fit(train_input, train_target)
+
+print(lr.predict([[50]]))
