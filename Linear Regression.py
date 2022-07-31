@@ -30,9 +30,11 @@ train_input = train_input.reshape(-1, 1)  #42개 데이터. -1은 전체 사이�
 test_input = test_input.reshape(-1, 1)  #14개 데이터.
 
 
-#모델 훈련
+#모델 훈련(1차방정식 선형 회귀)
 
 lr = LinearRegression()
 lr.fit(train_input, train_target)
+print(lr.coef_, lr.intercept_)  #기울기와 절편
 
-print(lr.predict([[50]]))
+print("1차방정식 선형 회귀 훈련 모델 점수", lr.score(train_input, train_target))
+print("1차방정식 선형 회귀 테스트 모델 점수", lr.score(test_input, test_target))
