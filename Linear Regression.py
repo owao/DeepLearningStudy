@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 
 #제대로 된 농어 데이터
@@ -27,3 +28,9 @@ perch_weight = np.array([5.9, 32.0, 40.0, 51.5, 70.0, 100.0, 78.0, 80.0, 85.0, 8
 train_input, test_input, train_target, test_target = train_test_split(perch_length, perch_weight, random_state=42)
 train_input = train_input.reshape(-1, 1)  #42개 데이터. -1은 전체 사이즈대로 행을 유지한다는 뜻
 test_input = test_input.reshape(-1, 1)  #14개 데이터.
+
+
+#모델 훈련
+
+lr = LinearRegression()
+lr.fit(train_input, train_target)
