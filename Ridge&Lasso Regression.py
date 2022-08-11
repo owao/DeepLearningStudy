@@ -24,7 +24,7 @@ perch_weight = np.array([5.9, 32.0, 40.0, 51.5, 70.0, 100.0, 78.0, 80.0, 85.0, 8
 
 #훈련용 데이터와 테스트 데이터로 분리한 다음 사이킷런에 맞게 열이 2인 행렬로 바꿔준다
 
-train_input, test_input, train_target, test_target = train_test_split(perch_full, perch_weight, random_state=42).
+train_input, test_input, train_target, test_target = train_test_split(perch_full, perch_weight, random_state=42)
 
 
 #모델 훈련(1차방정식 선형 회귀)
