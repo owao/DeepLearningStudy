@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
 #pandas를 이용한 데이터 준비
@@ -38,6 +38,27 @@ train_poly = poly.transform(train_input)
 poly.get_feature_names_out() #특성이 어떻게 만들어졌는지 확인(어떤 입력 조합인지)
 test_poly = poly.transform(test_input)
 
-#모델 훈련(1차방정식 선형 회귀)
+
+#모델 훈련(다중 회귀)
+
+lr = LinearRegression()
+lr.fit(train_poly, train_target)
+
+print("train set:", lr.score(train_poly, train_target))
+print("test set:", lr.score(test_poly, test_target))
 
 
+#더 많은 특성 추가(by feature engineering) but 모델의 과대적합 주의!!
+
+poly = PolynomialFeatures(degree=5, include_bias=False)
+poly.fit(train_input)
+train_poly = poly.transform(train_input)
+test_poly = poly.transform(test_input)
+
+
+#규제(regularization): 모델이 과대적합되지 않도록 규제하는 것! 선형 회귀에서는 계수나 기울기의 크기를 작게 만드는 일
+
+ss = StandardScaler()  #계수를 규제하기 위해 정규화를 한다
+ss.fit(train_poly)
+train_scaled = ss.transform(train_poly)
+train_scaled = ss.transform(test_poly)
