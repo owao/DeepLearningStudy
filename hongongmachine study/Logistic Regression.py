@@ -71,6 +71,5 @@ print(np.round(proba, decimals=3))
 #다중분류는 시그모이드가 아니라 소프트맥스 함수를 사용해 0~1로 변환한다
 
 decision = lr.decision_function(test_scaled[:5])
-print(np.round(decision, decimals=2))
 proba = softmax(decision, axis=1)
-print(np.round(proba, decimals=3))
+print(np.round(proba, decimals=3))  #우리 손으로 한 softmax가 앞선 출력값과 같은지 확인
