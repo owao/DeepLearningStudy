@@ -61,7 +61,7 @@ elif (knr.score(test_input, test_target)<knr.score(train_input, train_target)):
 
 
 #과대(과소)적합 조정
-knr.n_neighbors = 3  #이웃의 갯수를 5->3으로 설정
+knr.n_neighbors = 3  #이웃의 갯수를 5->3으로 설정 
 knr.fit(train_input, train_target)
 print(knr.score(train_input, train_target))
 print(knr.score(test_input, test_target))
