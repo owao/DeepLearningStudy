@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import PolynomialFeatures
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
@@ -61,4 +61,84 @@ test_poly = poly.transform(test_input)
 ss = StandardScaler()  #계수를 규제하기 위해 정규화를 한다
 ss.fit(train_poly)
 train_scaled = ss.transform(train_poly)
-train_scaled = ss.transform(test_poly)
+test_scaled = ss.transform(test_poly)
+
+
+
+#릿지 회귀(릿지와 라쏘는 선형 회귀 모델에 규제를 추가한 것)
+
+ridge = Ridge()
+ridge.fit(train_scaled, train_target)
+print("ridge train set:", ridge.score(train_scaled, train_target))
+print("ridge test set:", ridge.score(test_scaled, test_target))
+
+
+#적절한 alpha값(클수록 규제를 심하게 함) 찾기
+
+train_score = []
+test_score = []
+alpha_list = [0.001, 0.01, 0.1, 1, 10, 100]
+for alpha in alpha_list:
+       ridge = Ridge(alpha=alpha)
+       ridge.fit(train_scaled, train_target)
+       train_score.append(ridge.score(train_scaled, train_target))
+       test_score.append(ridge.score(test_scaled, test_target))
+
+
+#alpha값 그래프 그려보기
+
+plt.plot(np.log10(alpha_list), train_score)  #train의 알파값에 따른 점수
+plt.plot(np.log10(alpha_list), test_score)  #test의 알파값에 따른 점수
+plt.xlabel('alpha')
+plt.ylabel('R^2')
+plt.show()
+
+
+#적합한 alpha 값(0.1)로 ridge 모델 훈련
+
+ridge = Ridge(alpha=0.1)
+ridge.fit(train_scaled, train_target)
+print("ridge train set:", ridge.score(train_scaled, train_target))
+print("ridge test set:", ridge.score(test_scaled, test_target))
+
+
+
+#라쏘 회귀(릿지와 라쏘는 선형 회귀 모델에 규제를 추가한 것)
+
+lasso = Lasso()
+lasso.fit(train_scaled, train_target)
+print("lasso train set:", lasso.score(train_scaled, train_target))
+print("lasso test set:", lasso.score(test_scaled, test_target))
+
+
+#적절한 alpha값(클수록 규제를 심하게 함) 찾기
+
+train_score = []
+test_score = []
+alpha_list = [0.001, 0.01, 0.1, 1, 10, 100]
+for alpha in alpha_list:
+       lasso = Lasso(alpha=alpha, max_iter=10000) #max_iter: 반복 계산 횟수를 늘리기 위해 지정
+       lasso.fit(train_scaled, train_target)
+       train_score.append(lasso.score(train_scaled, train_target))
+       test_score.append(lasso.score(test_scaled, test_target))
+
+
+#alpha값 그래프 그려보기
+
+plt.plot(np.log10(alpha_list), train_score)  #train의 알파값에 따른 점수
+plt.plot(np.log10(alpha_list), test_score)  #test의 알파값에 따른 점수
+plt.xlabel('alpha')
+plt.ylabel('R^2')
+plt.show()
+
+
+#적합한 alpha 값(10)로 ridge 모델 훈련
+
+lasso = Lasso(alpha=10)
+lasso.fit(train_scaled, train_target)
+print("lasso train set:", lasso.score(train_scaled, train_target))
+print("lasso test set:", lasso.score(test_scaled, test_target))
+
+
+#lasso 모델이 사용하지 않은 특성(안 유용한)이 몇 개인지 살피기
+print(np.sum(lasso.coef_ == 0))
