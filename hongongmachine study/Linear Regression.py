@@ -1,4 +1,4 @@
-#혼공머신 교재 3-2챕터
+#혼공머신 교재 3-2챕터 
 
 import numpy as np
 import matplotlib.pyplot as plt
