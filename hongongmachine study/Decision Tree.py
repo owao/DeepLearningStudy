@@ -57,4 +57,30 @@ plot_tree(dt, max_depth=1, filled=True, feature_names=['alcohol', 'sugar', 'pH']
 plt.show()
 
 
-#과적합을 막고 테스트를 예측을 잘 하기 위한 가지치기!
+#과적합을 막고 테스트를 예측을 잘 하기 위한 가지치기!(트리 깊이 지정)
+
+dt = DecisionTreeClassifier(max_depth=3, random_state=42)
+dt.fit(train_scaled, train_target)
+print(dt.score(train_scaled, train_target))
+print(dt.score(test_scaled, test_target))
+
+plt.figure(figsize=(20,15))
+plot_tree(dt, filled=True, feature_names=['alcohol', 'sugar', 'pH'])
+plt.show()
+
+
+#결정 트리는 표준화 전처리를 할 필요가 없으므로 전처리 전 세트를 사용해보자
+
+dt = DecisionTreeClassifier(max_depth=3, random_state=42)
+dt.fit(train_input, train_target)
+print(dt.score(train_input, train_target))
+print(dt.score(test_input, test_target))
+
+plt.figure(figsize=(20,15))  #그림을 알아보기가 더 쉽다!
+plot_tree(dt, filled=True, feature_names=['alcohol', 'sugar', 'pH'])
+plt.show()
+
+
+#특성별 중요도 확인
+
+print(dt.feature_importances_)
