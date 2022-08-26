@@ -4,8 +4,9 @@ from curses.ascii import GS
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split, cross_validate, StratifiedKFold, GridSearchCV
-from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.model_selection import train_test_split, cross_validate, StratifiedKFold, GridSearchCV, RandomizedSearchCV
+from sklearn.tree import DecisionTreeClassifier
+from scipy.stats import uniform, randint
 
 
 #데이터 불러오기&나누기(검증 세트까지)
@@ -53,7 +54,7 @@ print(gs.best_params_)  #최적의 파라미터 확인
 
 params = {'min_impurity_decrease': np.arange(0.0001, 0.001, 0.0001),
           'max_depth': range(5, 20, 1),
-          'min_samples_split': range(2, 100, 10)
+          'min_samples_split': range(2, 100, 10),
          }
 gs = GridSearchCV(DecisionTreeClassifier(random_state=42), params, n_jobs=-1)
 gs.fit(train_input, train_target)
@@ -62,3 +63,19 @@ print(np.max(gs.cv_results_['mean_test_score']))
 
 
 #탐색할 파라미터 값을 랜덤 서치(Random Searhch)로 찾는다
+
+params = {'min_impurity_decrease': uniform(0.0001, 0.001),
+          'max_depth': randint(20, 50),
+          'min_samples_split': randint(2, 25),
+          'min_samples_leaf': randint(1, 25),
+         }
+gs = RandomizedSearchCV(DecisionTreeClassifier(random_state=42), params, n_iter=100, n_jobs=-1, random_state=42)
+gs.fit(train_input, train_target)
+print(gs.best_params_)
+print(np.max(gs.cv_results_['mean_test_score']))
+
+
+#랜덤서치로 구한 최적의 모델로 드디어! 테스트 데이터를 예측
+
+dt = gs.best_estimator_
+print(dt.score(test_input, test_target))
