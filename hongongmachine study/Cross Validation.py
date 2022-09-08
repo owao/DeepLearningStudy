@@ -1,9 +1,7 @@
 #혼공머신 교재 5-2챕터
 
-from curses.ascii import GS
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, cross_validate, StratifiedKFold, GridSearchCV, RandomizedSearchCV
 from sklearn.tree import DecisionTreeClassifier
 from scipy.stats import uniform, randint
