@@ -1,4 +1,4 @@
-#185p
+#185p Mini Project
 
 import numpy as np
 epsilon = 0.0000001 #부동소수점 오차 방지
