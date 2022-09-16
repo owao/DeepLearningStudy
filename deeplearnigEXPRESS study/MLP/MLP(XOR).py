@@ -46,7 +46,7 @@ def fit():
             x = np.reshape(x, (1,-1))
             y = np.reshape(y, (1,-1))
 
-            layer0, layer1, layer2 = predict(x)
+            layer0, layer1, layer2 = predict(X)
             layer2_error = layer2 - y
             layer2_delta = layer2_error * actf_deriv(layer2)
             layer1_error = np.dot(layer2_delta, W2.T)    #은닉층의 오차를 계산할 때는 입출력이 바뀌므로 전치 행렬을 사용해야 함
