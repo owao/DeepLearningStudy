@@ -30,7 +30,7 @@ epoch = 50000
 
 #MLP 순방향 전파 계산 함수
 def predict(x):
-    layer0 = X
+    layer0 = x
     Z1 = np.dot(layer0, W1)+B1
     layer1 = actf(Z1)
     Z2 = np.dot(layer1, W2)+B2
