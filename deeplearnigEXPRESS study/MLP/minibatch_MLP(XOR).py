@@ -18,6 +18,7 @@ T = np.array([[0], [1], [1], [0]])
 
 #가중치: -1.0~1.0 사이의 난수로 초기화
 W1 = 2*np.random.random((inputs, hiddens))-1
+W1 = np.reshape(W1, (2, -1))  #predict에서 x와 곱해주기 위해 2행짜리 행렬로 변환
 W2 = 2*np.random.random((inputs, hiddens))-1
 
 #바이어스(단일 값): 0으로 초기화
@@ -25,7 +26,7 @@ B1 = np.zeros(hiddens)
 B2 = np.zeros(outputs)
 
 #에포크
-epoch = 50000
+epoch = 90000
 
 #MLP 순방향 전파 계산 함수
 def predict(x):
@@ -56,7 +57,7 @@ def test():
     for x,y in zip(X, T):
         x = np.reshape(x, (1, -1))  #2차원 행렬로 변환(입력해야하므로)
         layer0, layer1, layer2 = predict(x)
-        print(x, y)
+        print(x, y, layer2)
 
 fit()
 test()
