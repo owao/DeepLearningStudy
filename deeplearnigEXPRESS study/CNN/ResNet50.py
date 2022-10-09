@@ -14,4 +14,4 @@ x=preprocess_input(x)
 
 #기존 모델을 이용해 예측
 preds=model.predict(x)
-print('예측:', decode_predictions(preds, top=1)[0])
+print('예측:', decode_predictions(preds, top=3)[0])
