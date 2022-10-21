@@ -53,7 +53,6 @@ encoded = np.array(encoded)
 #가장 높은 예측 유닛을 찾음
 onehot_output = model.predict(encoded)
 output = np.argmax(onehot_output)
-print(output)
 
 #다음 단어를 출력
 print(test_text, "=>", end=" ")
